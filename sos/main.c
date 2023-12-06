@@ -61,8 +61,8 @@ static void divide_ex(int exid) {
 
 /* The C entry point of our operating system */
 void sos_main(unsigned long magic, unsigned long addr) {
-  unsigned i;
-  sos_ret_t err;
+  // unsigned i;
+  // sos_ret_t err;
   int line = 1;
 
   /* Grub sends us a structure, called multiboot_info_t with a lot of
@@ -103,30 +103,35 @@ void sos_main(unsigned long magic, unsigned long addr) {
   /* Setup SOS IRQs and exceptions subsystem */
   // Met en place le handler pour l'exception pour double faute qui est un peu particulière
   // Le handler en question est ecrit en assembleur dans hwcore\exception_wrappers.S
-  err = sos_install_dbl_fault_exceptions();
+  sos_install_dbl_fault_exceptions();
+  // err = sos_install_dbl_fault_exceptions();
   // sos_x86_videomem_printf(line++, 0, SOS_X86_VIDEO_FG_YELLOW | SOS_X86_VIDEO_BG_BLUE, "sos_exceptions_setup        : %d", err);
 
-  err = sos_irq_setup();
+  sos_irq_setup();
+  // err = sos_irq_setup();
   // sos_x86_videomem_printf(line++, 0, SOS_X86_VIDEO_FG_YELLOW | SOS_X86_VIDEO_BG_BLUE, "sos_irq_setup               : %d", err);
 
   /* Configure the timer so as to raise the IRQ0 at a 20Hz rate */
-  err = sos_i8254_set_frequency(20);
+  sos_i8254_set_frequency(20);
+  // err = sos_i8254_set_frequency(20);
   // sos_x86_videomem_printf(line++, 0, SOS_X86_VIDEO_FG_YELLOW | SOS_X86_VIDEO_BG_BLUE, "sos_i8254_set_frequency     : %d", err);
 
   /* Binding some HW interrupts and exceptions to software routines */
-  err = sos_irq_set_routine(SOS_IRQ_TIMER, clk_it);
+  sos_irq_set_routine(SOS_IRQ_TIMER, clk_it);
+  // err = sos_irq_set_routine(SOS_IRQ_TIMER, clk_it);
   // sos_x86_videomem_printf(line++, 0, SOS_X86_VIDEO_FG_YELLOW | SOS_X86_VIDEO_BG_BLUE, "sos_irq_set_routine         : %d", err);
 
-  err = sos_exception_set_routine(SOS_EXCEPT_DIVIDE_ERROR, divide_ex);
+  sos_exception_set_routine(SOS_EXCEPT_DIVIDE_ERROR, divide_ex);
+  // err = sos_exception_set_routine(SOS_EXCEPT_DIVIDE_ERROR, divide_ex);
   // sos_x86_videomem_printf(line++, 0, SOS_X86_VIDEO_FG_YELLOW | SOS_X86_VIDEO_BG_BLUE, "sos_exception_set_routine   : %d", err);
 
-  sos_vaddr_t wrapper_address;
-  sos_idt_get_wrapper(0, &wrapper_address, 0);
-  sos_x86_videomem_printf(line++, 0, SOS_X86_VIDEO_FG_YELLOW | SOS_X86_VIDEO_BG_BLUE, "Div 0 wrapper addr in IDT[0]   : %x", wrapper_address);
+  // sos_vaddr_t wrapper_address;
+  // sos_idt_get_wrapper(0, &wrapper_address, 0);
+  // sos_x86_videomem_printf(line++, 0, SOS_X86_VIDEO_FG_YELLOW | SOS_X86_VIDEO_BG_BLUE, "Div 0 wrapper addr in IDT[0]   : %x", wrapper_address);
 
-  sos_x86_videomem_printf(line++, 0, SOS_X86_VIDEO_FG_YELLOW | SOS_X86_VIDEO_BG_BLUE, "sos_exception_handler_array[0] : %x", sos_exception_get_routine(0));
+  // sos_x86_videomem_printf(line++, 0, SOS_X86_VIDEO_FG_YELLOW | SOS_X86_VIDEO_BG_BLUE, "sos_exception_handler_array[0] : %x", sos_exception_get_routine(0));
 
-  sos_x86_videomem_printf(line++, 0, SOS_X86_VIDEO_FG_YELLOW | SOS_X86_VIDEO_BG_BLUE, "Addr of divide_ex              : %x", divide_ex);
+  // sos_x86_videomem_printf(line++, 0, SOS_X86_VIDEO_FG_YELLOW | SOS_X86_VIDEO_BG_BLUE, "Addr of divide_ex              : %x", divide_ex);
 
   /* Enabling the HW interrupts here, this will make the timer HW
      interrupt call our clk_it handler */
@@ -137,7 +142,7 @@ void sos_main(unsigned long magic, unsigned long addr) {
      compiling with -O3: "i=1/0;" is considered dead code with gcc
      -O3. */
 
-  i = 10;
+  // i = 10;
   while (1) {
     // for (int j = 0; j < 5; j++) {
     /* Stupid function call to fool gcc optimizations */
