@@ -32,47 +32,47 @@ SOS_MULTIBOOT_ISO = dist/sos2.iso
 sos2 : $(SOS_MULTIBOOT_ISO)
 
 $(SOS_MULTIBOOT_ISO): $(SOS_BIN)
-	grub-mkrescue -d /usr/lib/grub/i386-pc -o dist/sos2.iso target/iso
+  grub-mkrescue -d /usr/lib/grub/i386-pc -o dist/sos2.iso target/iso
 
 $(SOS_BIN) : $(OBJECT_FILES)
-	mkdir -p dist
-	$(LD) $(LDFLAGS) -T ./target/sos2.ld -o $(SOS_BIN) $^
+  mkdir -p dist
+  $(LD) $(LDFLAGS) -T ./target/sos2.ld -o $(SOS_BIN) $^
 
 $(BOOTSTRAP_OBJ): build/%.o : bootstrap/%.asm
-	mkdir -p $(dir $@) && \
-	nasm -f elf32 $(patsubst build/%.o, bootstrap/%.asm, $@) -o $@
+  mkdir -p $(dir $@) && \
+  nasm -f elf32 $(patsubst build/%.o, bootstrap/%.asm, $@) -o $@
 
 $(DRIVERS_OBJ): build/%.o : drivers/%.c
-	mkdir -p $(dir $@) && \
-	$(CC) -I$(PWD) -c $(CFLAGS)  $(patsubst  build/%.o, drivers/%.c, $@) -o $@
+  mkdir -p $(dir $@) && \
+  $(CC) -I$(PWD) -c $(CFLAGS)  $(patsubst  build/%.o, drivers/%.c, $@) -o $@
 
-
+      
 
 
 $(HWCORE_OBJ0): build/%.o : hwcore/%.S
-	mkdir -p $(dir $@) && \
-	$(CC) -I$(PWD) -c $(CFLAGS) -DASM_SOURCE=1 $(patsubst  build/%.o, hwcore/%.S, $@) -o $@
+  mkdir -p $(dir $@) && \
+  $(CC) -I$(PWD) -c $(CFLAGS) -DASM_SOURCE=1 $(patsubst  build/%.o, hwcore/%.S, $@) -o $@
 
 $(HWCORE_OBJ1): build/%.o : hwcore/%.asm
-	mkdir -p $(dir $@) && \
-	nasm -f elf32 $(patsubst build/%.o, hwcore/%.asm, $@) -o $@
+  mkdir -p $(dir $@) && \
+  nasm -f elf32 $(patsubst build/%.o, hwcore/%.asm, $@) -o $@
 
 $(HWCORE_OBJ2): build/%.o : hwcore/%.c
-	mkdir -p $(dir $@) && \
-	$(CC) -I$(PWD) -c $(CFLAGS)  $(patsubst  build/%.o, hwcore/%.c, $@) -o $@
+  mkdir -p $(dir $@) && \
+  $(CC) -I$(PWD) -c $(CFLAGS)  $(patsubst  build/%.o, hwcore/%.c, $@) -o $@
 
 
 
 
 $(SOS_OBJ): build/%.o : sos/%.c
-	mkdir -p $(dir $@) && \
-	$(CC) -I$(PWD) -c $(CFLAGS)  $(patsubst  build/%.o, sos/%.c, $@) -o $@
+  mkdir -p $(dir $@) && \
+  $(CC) -I$(PWD) -c $(CFLAGS)  $(patsubst  build/%.o, sos/%.c, $@) -o $@
 
 
 .PHONY: clean
 clean:
-	$(RM) -rf dist
-	$(RM) $(SOS_BIN)
-	$(RM) build/*.o build/*~
+  $(RM) -rf dist
+  $(RM) $(SOS_BIN)
+  $(RM) build/*.o build/*~
 
 
